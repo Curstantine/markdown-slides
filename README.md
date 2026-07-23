@@ -1,8 +1,7 @@
 # Markdown Slides
 
 A sleek, feature-rich single-page app that turns Markdown into presentation
-slides — entirely in the browser. Built with **Vite + Lit + TypeScript**,
-**Tailwind v4**, **daisyUI**, and **Iconify**. No metaframework.
+slides. Entirely in the browser.
 
 ## Features
 
@@ -28,7 +27,7 @@ slides — entirely in the browser. Built with **Vite + Lit + TypeScript**,
 ## Getting started
 
 This project uses **pnpm** exclusively. The expected version is pinned in
-`package.json` as `pnpm@11.16.0`.
+`package.json`.
 
 ```bash
 pnpm install
@@ -45,8 +44,6 @@ pnpm fmt       # format the repository with oxfmt
 pnpm build     # type-check (tsc) + production build to dist/
 pnpm preview   # serve the production build
 ```
-
-Do not use `npm`, `npx`, `yarn`, or `bun` for this repository.
 
 ## Keyboard shortcuts
 
