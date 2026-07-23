@@ -60,6 +60,14 @@ export const ICONS = {
 export type IconName = keyof typeof ICONS;
 
 /** Render a Heroicon inline. `size` maps to the .hi / .hi-sm / .hi-lg boxes. */
-export function icon(name: IconName, size: "sm" | "md" | "lg" = "md", cls?: string): TemplateResult {
-	return html`<span class=${clsx(cls, size === "sm" ? "hi hi-sm" : size === "lg" ? "hi hi-lg" : "hi")} aria-hidden="true">${unsafeSVG(ICONS[name])}</span>`;
+export function icon(
+	name: IconName,
+	size: "sm" | "md" | "lg" = "md",
+	cls?: string,
+): TemplateResult {
+	return html`<span
+		class=${clsx(cls, size === "sm" ? "hi hi-sm" : size === "lg" ? "hi hi-lg" : "hi")}
+		aria-hidden="true"
+		>${unsafeSVG(ICONS[name])}</span
+	>`;
 }

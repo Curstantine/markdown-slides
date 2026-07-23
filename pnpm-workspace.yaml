@@ -2,4 +2,4 @@
 # heroicons ships prebuilt SVGs; its own build script is destructive and must
 # never run during install.
 neverBuiltDependencies:
-  - heroicons
+    - heroicons
