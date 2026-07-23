@@ -67,7 +67,7 @@ export class DeckPreview extends AppElement {
 						@click=${() => this.go(current - 1, total)}
 						aria-label="Previous slide"
 					>
-						${icon("prev")}
+						${icon("icon-[heroicons--chevron-left]")}
 					</button>
 					<button
 						class="btn absolute top-1/2 right-3 btn-circle -translate-y-1/2 shadow-lg btn-sm sm:btn-md"
@@ -75,7 +75,7 @@ export class DeckPreview extends AppElement {
 						@click=${() => this.go(current + 1, total)}
 						aria-label="Next slide"
 					>
-						${icon("next")}
+						${icon("icon-[heroicons--chevron-right]")}
 					</button>
 				</div>
 

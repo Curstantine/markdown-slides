@@ -96,27 +96,21 @@ export class MdEditor extends AppElement {
 	private onKeydown(e: KeyboardEvent) {
 		if (e.key === "Tab") {
 			e.preventDefault();
-			this.insert("  ", "");
+			this.insert("   ", "");
 		}
 	}
 
 	/** Wrap the current selection with before/after (or insert at caret). */
 	private insert(before: string, after: string) {
-		const ta = this.textarea;
-		const { selectionStart: s, selectionEnd: en, value } = ta;
+		const { selectionStart: s, selectionEnd: en, value } = this.textarea;
 		const sel = value.slice(s, en);
 		const next = value.slice(0, s) + before + sel + after + value.slice(en);
+
 		store.set({ markdown: next });
-		this.updateComplete.then(() => {
-			ta.focus();
-			const caret = s + before.length + sel.length;
-			ta.setSelectionRange(caret, caret);
-		});
 	}
 
 	private insertBlock(text: string) {
-		const ta = this.textarea;
-		const { selectionStart: s, value } = ta;
+		const { selectionStart: s, value } = this.textarea;
 		const needsNlBefore = s > 0 && value[s - 1] !== "\n";
 		this.insert((needsNlBefore ? "\n" : "") + text, "");
 	}
@@ -152,18 +146,24 @@ export class MdEditor extends AppElement {
 					class="flex flex-wrap items-center gap-1 border-b border-base-300 bg-base-200/60 px-2 py-1.5"
 				>
 					<span class="flex items-center gap-1 px-2 text-xs font-semibold opacity-70">
-						${icon("code", "sm")} Markdown
+						${icon("icon-[heroicons--code-bracket]", "sm")} Markdown
 					</span>
 					<div class="flex-1"></div>
-					${tool("Bold", "sparkles", () => this.insert("**", "**"))}
-					${tool("Slide break", "plus", () => this.insertBlock("\n---\n\n"))}
-					${tool("Two columns", "grid", () =>
+					${tool("Bold", "icon-[heroicons--bold]", () => this.insert("**", "**"))}
+					${tool("Slide break", "icon-[heroicons--plus]", () =>
+						this.insertBlock("\n---\n\n"),
+					)}
+					${tool("Two columns", "icon-[heroicons--squares-2x2]", () =>
 						this.insertBlock("\nLeft\n\n===\n\nRight\n"),
 					)}
-					${tool("Code block", "code", () => this.insertBlock("\n```ts\n\n```\n"))}
+					${tool("Code block", "icon-[heroicons--code-bracket]", () =>
+						this.insertBlock("\n```ts\n\n```\n"),
+					)}
 					<div class="mx-1 h-4 w-px bg-base-300"></div>
-					${tool("Load sample", "docNew", () => this.loadSample())}
-					${tool("Clear", "trash", () => this.clear())}
+					${tool("Load sample", "icon-[heroicons--document-plus]", () =>
+						this.loadSample(),
+					)}
+					${tool("Clear", "icon-[heroicons--trash]", () => this.clear())}
 				</div>
 
 				<div class="editor-canvas min-h-0 flex-1">

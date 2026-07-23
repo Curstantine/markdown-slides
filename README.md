@@ -2,7 +2,7 @@
 
 A sleek, feature-rich single-page app that turns Markdown into presentation
 slides — entirely in the browser. Built with **Vite + Lit + TypeScript**,
-**Tailwind v4**, **daisyUI**, and **Heroicons**. No metaframework.
+**Tailwind v4**, **daisyUI**, and **Iconify**. No metaframework.
 
 ## Features
 

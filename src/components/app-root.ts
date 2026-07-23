@@ -186,7 +186,12 @@ export class AppRoot extends AppElement {
 
 	private colorModeMenu() {
 		const mode = store.state.colorMode;
-		const activeIc: IconName = mode === "light" ? "sun" : mode === "dark" ? "moon" : "desktop";
+		const activeIc: IconName =
+			mode === "light"
+				? "icon-[heroicons--sun]"
+				: mode === "dark"
+					? "icon-[heroicons--moon]"
+					: "icon-[heroicons--computer-desktop]";
 		const opt = (m: ColorMode, ic: IconName, label: string) => html`
 			<li>
 				<a class=${mode === m ? "active" : ""} @click=${() => this.setColorMode(m)}>
@@ -209,8 +214,9 @@ export class AppRoot extends AppElement {
 					tabindex="0"
 					class="dropdown-content menu z-50 mt-1 w-44 rounded-box border border-base-300 bg-base-100 p-2 shadow-lg"
 				>
-					${opt("light", "sun", "Light")} ${opt("dark", "moon", "Dark")}
-					${opt("system", "desktop", "System")}
+					${opt("light", "icon-[heroicons--sun]", "Light")}
+					${opt("dark", "icon-[heroicons--moon]", "Dark")}
+					${opt("system", "icon-[heroicons--computer-desktop]", "System")}
 				</ul>
 			</div>
 		`;
@@ -233,7 +239,9 @@ export class AppRoot extends AppElement {
 							: "btn-ghost"} btn join-item gap-1 btn-sm"
 						@click=${() => store.set({ view: "edit" })}
 					>
-						${icon("eye", "sm")}<span class="hidden md:inline">Slides</span>
+						${icon("icon-[heroicons--eye]", "sm")}<span class="hidden md:inline"
+							>Slides</span
+						>
 					</button>
 					<button
 						class="${s.view === "overview"
@@ -241,13 +249,17 @@ export class AppRoot extends AppElement {
 							: "btn-ghost"} btn join-item gap-1 btn-sm"
 						@click=${() => store.set({ view: "overview" })}
 					>
-						${icon("grid", "sm")}<span class="hidden md:inline">Overview</span>
+						${icon("icon-[heroicons--squares-2x2]", "sm")}<span class="hidden md:inline"
+							>Overview</span
+						>
 					</button>
 				</div>
 
 				${s.view === "edit"
 					? this.iconBtn(
-							s.showEditor ? "eyeSlash" : "code",
+							s.showEditor
+								? "icon-[heroicons--eye-slash]"
+								: "icon-[heroicons--code-bracket]",
 							s.showEditor ? "Hide editor" : "Show editor",
 							() => store.set({ showEditor: !s.showEditor }),
 							"ml-1",
@@ -258,7 +270,9 @@ export class AppRoot extends AppElement {
 				<div class="flex-1"></div>
 
 				<!-- File actions -->
-				${this.iconBtn("upload", "Open .md file", () => this.fileInput.click())}
+				${this.iconBtn("icon-[heroicons--arrow-up-tray]", "Open .md file", () =>
+					this.fileInput.click(),
+				)}
 				<div class="dropdown dropdown-end">
 					<div
 						tabindex="0"
@@ -266,7 +280,7 @@ export class AppRoot extends AppElement {
 						class="btn btn-square btn-ghost btn-sm"
 						title="Export"
 					>
-						${icon("download")}
+						${icon("icon-[heroicons--arrow-down-tray]")}
 					</div>
 					<ul
 						tabindex="0"
@@ -274,12 +288,12 @@ export class AppRoot extends AppElement {
 					>
 						<li>
 							<a @click=${() => this.downloadMarkdown()}>
-								${icon("doc", "sm")} Download .md
+								${icon("icon-[heroicons--document-text]", "sm")} Download .md
 							</a>
 						</li>
 						<li>
 							<a @click=${() => this.exportPdf()}>
-								${icon("present", "sm")} Export PDF
+								${icon("icon-[heroicons--presentation-chart-bar]", "sm")} Export PDF
 							</a>
 						</li>
 					</ul>
@@ -292,7 +306,9 @@ export class AppRoot extends AppElement {
 					@click=${() => this.startPresenting()}
 					title="Present (P)"
 				>
-					${icon("play", "sm")}<span class="hidden sm:inline">Present</span>
+					${icon("icon-[heroicons--play]", "sm")}<span class="hidden sm:inline"
+						>Present</span
+					>
 				</button>
 
 				<label
@@ -301,7 +317,7 @@ export class AppRoot extends AppElement {
 					title="Slide design"
 					aria-label="Slide design"
 				>
-					${icon("cog")}
+					${icon("icon-[heroicons--cog-6-tooth]")}
 				</label>
 			</div>
 		`;
@@ -385,7 +401,7 @@ export class AppRoot extends AppElement {
 							class="rounded-2xl border-4 border-dashed border-primary bg-base-100/90 px-10 py-8 text-center shadow-2xl"
 						>
 							<div class="mb-2 flex justify-center text-primary">
-								${icon("upload", "lg")}
+								${icon("icon-[heroicons--arrow-up-tray]", "lg")}
 							</div>
 							<p class="text-lg font-semibold">Drop a Markdown file to open</p>
 						</div>

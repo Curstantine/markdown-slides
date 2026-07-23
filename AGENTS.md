@@ -1,6 +1,6 @@
 # Agent Guide
 
-This repository is a browser-only Markdown slide deck editor built with Vite, Lit, TypeScript, Tailwind CSS v4, daisyUI, marked, Shiki, and Heroicons.
+This repository is a browser-only Markdown slide deck editor built with Vite, Lit, TypeScript, Tailwind CSS v4, daisyUI, marked, Shiki, and Iconify.
 
 ## Package manager
 
@@ -29,7 +29,7 @@ Use the most targeted command that validates your change. For source changes, pr
 - `src/highlighter.ts` — Shiki-powered syntax highlighting.
 - `src/config.ts` — theme, font, aspect ratio, transition, and sample deck configuration.
 - `src/derive.ts` — derived render settings from store state.
-- `src/icons.ts` — Heroicons SVG helpers.
+- `src/icons.ts` — Iconify SVG helpers.
 - `src/components/` — Lit UI components for editor, preview, presenter, settings, and app shell.
 - `public/` — static assets served by Vite.
 
@@ -50,4 +50,4 @@ Use the most targeted command that validates your change. For source changes, pr
 
 ## Dependency-build warning
 
-`heroicons` ships prebuilt SVGs but has a destructive package build script. `pnpm-workspace.yaml` sets `neverBuiltDependencies` for `heroicons`; preserve that setting unless there is a well-tested reason to change it.
+Iconify icon data is provided by @iconify-json/heroicons and rendered by @iconify/tailwind4.

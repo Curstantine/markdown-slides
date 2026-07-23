@@ -161,7 +161,7 @@ export class PresentMode extends AppElement {
 						@click=${() => this.go(-1)}
 						aria-label="Previous"
 					>
-						${icon("prev")}
+						${icon("icon-[heroicons--chevron-left]")}
 					</button>
 					<span class="px-2 font-mono text-sm tabular-nums select-none"
 						>${current + 1} / ${total}</span
@@ -172,7 +172,7 @@ export class PresentMode extends AppElement {
 						@click=${() => this.go(1)}
 						aria-label="Next"
 					>
-						${icon("next")}
+						${icon("icon-[heroicons--chevron-right]")}
 					</button>
 					<div class="mx-1 h-5 w-px bg-white/20"></div>
 					<button
@@ -180,14 +180,18 @@ export class PresentMode extends AppElement {
 						@click=${() => this.toggleFullscreen()}
 						aria-label="Toggle fullscreen"
 					>
-						${icon(this.isFullscreen ? "contract" : "expand")}
+						${icon(
+							this.isFullscreen
+								? "icon-[heroicons--arrows-pointing-in]"
+								: "icon-[heroicons--arrows-pointing-out]",
+						)}
 					</button>
 					<button
 						class="btn btn-circle btn-ghost text-white btn-sm hover:bg-white/15"
 						@click=${() => this.exit()}
 						aria-label="Exit presentation"
 					>
-						${icon("close")}
+						${icon("icon-[heroicons--x-mark]")}
 					</button>
 				</div>
 			</div>

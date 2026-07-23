@@ -61,14 +61,14 @@ export class SettingsPanel extends AppElement {
 			>
 				<div class="flex items-center justify-between border-b border-base-300 px-4 py-3">
 					<h2 class="flex items-center gap-2 text-lg font-bold">
-						${icon("paintBrush")} Slide design
+						${icon("icon-[heroicons--paint-brush]")} Slide design
 					</h2>
 					<label
 						for="settings-drawer"
 						class="btn btn-circle btn-ghost btn-sm"
 						aria-label="Close settings"
 					>
-						${icon("close")}
+						${icon("icon-[heroicons--x-mark]")}
 					</label>
 				</div>
 
@@ -76,7 +76,7 @@ export class SettingsPanel extends AppElement {
 					<!-- Theme -->
 					${this.section(
 						"Theme",
-						"swatch",
+						"icon-[heroicons--swatch]",
 						html`
 							<div class="grid grid-cols-2 gap-2">
 								${SLIDE_THEMES.map(
@@ -112,7 +112,7 @@ export class SettingsPanel extends AppElement {
 					<!-- Body font -->
 					${this.section(
 						"Body font",
-						"doc",
+						"icon-[heroicons--document-text]",
 						html`
 							<select
 								class="select-bordered select w-full"
@@ -141,7 +141,7 @@ export class SettingsPanel extends AppElement {
 					<!-- Code font -->
 					${this.section(
 						"Code font",
-						"code",
+						"icon-[heroicons--code-bracket]",
 						html`
 							<select
 								class="select-bordered select w-full"
@@ -170,7 +170,7 @@ export class SettingsPanel extends AppElement {
 					<!-- Sizing -->
 					${this.section(
 						"Text size",
-						"adjustments",
+						"icon-[heroicons--adjustments-horizontal]",
 						html`
 							<div class="flex items-center gap-3">
 								<input
@@ -195,7 +195,7 @@ export class SettingsPanel extends AppElement {
 					<!-- Aspect ratio -->
 					${this.section(
 						"Aspect ratio",
-						"present",
+						"icon-[heroicons--presentation-chart-bar]",
 						html`
 							<div class="join w-full">
 								${ASPECTS.map(
@@ -217,7 +217,7 @@ export class SettingsPanel extends AppElement {
 					<!-- Transition -->
 					${this.section(
 						"Transition",
-						"sparkles",
+						"icon-[heroicons--sparkles]",
 						html`
 							<div class="grid grid-cols-4 gap-2">
 								${TRANSITIONS.map(
@@ -269,7 +269,7 @@ export class SettingsPanel extends AppElement {
 								});
 						}}
 					>
-						${icon("trash", "sm")} Reset design
+						${icon("icon-[heroicons--trash]", "sm")} Reset design
 					</button>
 				</div>
 			</aside>
