@@ -1,0 +1,32 @@
+{
+	"name": "markdown-slides",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "vite",
+		"build": "tsc && vite build",
+		"preview": "vite preview",
+		"fmt": "oxfmt .",
+		"lint": "oxlint ."
+	},
+	"dependencies": {
+		"@shikijs/langs": "^4.3.1",
+		"@shikijs/themes": "^4.3.1",
+		"clsx": "^2.1.1",
+		"heroicons": "^2.2.0",
+		"lit": "^3.3.3",
+		"marked": "^18.0.7",
+		"oxfmt": "^0.60.0",
+		"oxlint": "^1.75.0",
+		"shiki": "^4.3.1"
+	},
+	"devDependencies": {
+		"@tailwindcss/vite": "^4.3.3",
+		"daisyui": "^5.7.0",
+		"tailwindcss": "^4.3.3",
+		"typescript": "~6.0.2",
+		"vite": "^8.1.1"
+	},
+	"packageManager": "pnpm@11.16.0+sha512.b767e9a98fc87aec0f42daefcd0e84941c2cdb45d73c4e1e68860fb2bdfdbe032ab592105479e5e05c237f740c8a5ffdbbb52385797ddc2296745a1bbb883e8d"
+}

@@ -1,0 +1,530 @@
+@import "tailwindcss";
+
+@plugin "daisyui" {
+	themes:
+		nord --default,
+		sunset --prefersdark;
+}
+
+/* ------------------------------------------------------------------ *
+ * App base
+ * ------------------------------------------------------------------ */
+:root {
+	color-scheme: light dark;
+}
+
+html,
+body {
+	margin: 0;
+	min-height: 100svh;
+}
+
+body {
+	font-family: "Inter", ui-sans-serif, system-ui, "Segoe UI", Roboto, sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-rendering: optimizeLegibility;
+	overflow: hidden; /* app owns its own scroll regions */
+}
+
+/* Slim, theme-aware scrollbars */
+* {
+	scrollbar-width: thin;
+	scrollbar-color: color-mix(in oklab, currentColor 25%, transparent) transparent;
+}
+*::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+}
+*::-webkit-scrollbar-thumb {
+	background: color-mix(in oklab, currentColor 22%, transparent);
+	border-radius: 999px;
+	border: 2px solid transparent;
+	background-clip: content-box;
+}
+*::-webkit-scrollbar-thumb:hover {
+	background: color-mix(in oklab, currentColor 40%, transparent);
+	background-clip: content-box;
+}
+
+/* Heroicons render inline via unsafeSVG; give them a predictable box. */
+.hi {
+	width: 1.25rem;
+	height: 1.25rem;
+	display: inline-block;
+	flex: none;
+}
+.hi svg {
+	width: 100%;
+	height: 100%;
+	display: block;
+}
+.hi-sm {
+	width: 1rem;
+	height: 1rem;
+}
+.hi-lg {
+	width: 1.5rem;
+	height: 1.5rem;
+}
+
+/* ------------------------------------------------------------------ *
+ * Markdown editor — a transparent <textarea> layered exactly over a
+ * Shiki-highlighted <pre>. Both share identical box metrics and wrapping so
+ * the caret and the highlighted glyphs stay aligned.
+ * ------------------------------------------------------------------ */
+.editor-canvas {
+	position: relative;
+	overflow: hidden;
+}
+
+/* Shared metrics — MUST match between the textarea and the Shiki <pre> so the
+   caret and highlighted glyphs line up. (The .editor-hl container must NOT be
+   in here — it would add a second layer of padding to the <pre> inside it.) */
+.editor-hl pre.shiki,
+.editor-ta {
+	margin: 0;
+	padding: 16px;
+	font-family: var(--app-code-font, ui-monospace, "JetBrains Mono", monospace);
+	font-size: 13px;
+	line-height: 1.6;
+	tab-size: 2;
+	letter-spacing: normal;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+	word-break: break-word;
+	box-sizing: border-box;
+}
+
+/* Clip/scroll container only — no padding or metrics of its own. */
+.editor-hl {
+	position: absolute;
+	inset: 0;
+	overflow: hidden;
+	z-index: 0;
+	pointer-events: none;
+}
+.editor-hl pre.shiki {
+	min-height: 100%;
+	background: transparent !important;
+}
+.editor-hl pre.shiki code {
+	font: inherit;
+	letter-spacing: inherit;
+	white-space: inherit;
+	word-break: inherit;
+	overflow-wrap: inherit;
+	background: transparent !important;
+}
+
+.editor-ta {
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	border: 0;
+	resize: none;
+	outline: none;
+	overflow: auto;
+	background: transparent;
+	color: transparent;
+	caret-color: var(--color-base-content, currentColor);
+	/* Hide the native scrollbar so the textarea's text width matches the
+	   overlay's exactly — otherwise the scrollbar narrows it and lines wrap
+	   differently. It stays scrollable via wheel/keys. */
+	scrollbar-width: none;
+}
+.editor-ta::-webkit-scrollbar {
+	display: none;
+}
+/* While Shiki is still loading, show the raw text so the editor is never blank. */
+.editor-ta.plain {
+	color: var(--color-base-content, currentColor);
+}
+.editor-ta::selection {
+	background: color-mix(in oklab, var(--color-primary, #6366f1) 30%, transparent);
+}
+
+/* ------------------------------------------------------------------ *
+ * Slide deck — base
+ *
+ * A slide is a fixed logical canvas (default 1280x720) scaled to fit its
+ * container so themes look identical at every screen size. Everything
+ * inside sizes in px against that canvas.
+ * ------------------------------------------------------------------ */
+.deck {
+	--slide-w: 1280;
+	--slide-h: 720;
+
+	/* Defaults — overridden per theme below */
+	--slide-bg: #ffffff;
+	--slide-fg: #1f2430;
+	--slide-muted: #5b6472;
+	--slide-heading: #0b1020;
+	--slide-accent: #6366f1;
+	--slide-accent-2: #ec4899;
+	--slide-border: color-mix(in oklab, var(--slide-fg) 14%, transparent);
+	--slide-code-bg: color-mix(in oklab, var(--slide-fg) 7%, transparent);
+	--slide-quote-bg: color-mix(in oklab, var(--slide-accent) 8%, transparent);
+	--slide-radius: 16px;
+	--slide-font: "Inter", ui-sans-serif, system-ui, sans-serif;
+	--slide-heading-font: var(--slide-font);
+	--slide-code-font: ui-monospace, "JetBrains Mono", monospace;
+	--slide-scale: 1;
+}
+
+/* Custom element defaults to display:inline, which ignores width/height
+   utilities and lets the fixed-size canvas dictate its size. Force block so
+   w-full/h-full constrain it and the transform scaler can fit it. */
+slide-view {
+	display: block;
+	overflow: hidden;
+}
+
+.slide-surface {
+	background: var(--slide-bg);
+	background-image: var(--slide-bg-image, none);
+	color: var(--slide-fg);
+	font-family: var(--slide-font);
+	overflow: hidden;
+	position: relative;
+}
+
+/* The scalable canvas */
+.slide-canvas {
+	width: calc(var(--slide-w) * 1px);
+	height: calc(var(--slide-h) * 1px);
+	padding: 72px 88px;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 0;
+	transform-origin: top left;
+	/* Don't inherit text-align from ancestors (thumbnails live inside
+	   <button>, which defaults to center) — slides are left-aligned. */
+	text-align: left;
+}
+
+/* Content typography inside a slide */
+.slide-canvas :where(h1, h2, h3, h4) {
+	font-family: var(--slide-heading-font);
+	color: var(--slide-heading);
+	font-weight: 700;
+	line-height: 1.08;
+	margin: 0 0 0.5em;
+	letter-spacing: -0.02em;
+}
+.slide-canvas h1 {
+	font-size: calc(68px * var(--slide-scale));
+}
+.slide-canvas h2 {
+	font-size: calc(46px * var(--slide-scale));
+}
+.slide-canvas h3 {
+	font-size: calc(34px * var(--slide-scale));
+}
+.slide-canvas h4 {
+	font-size: calc(27px * var(--slide-scale));
+	color: var(--slide-muted);
+}
+.slide-canvas p,
+.slide-canvas li {
+	font-size: calc(28px * var(--slide-scale));
+	line-height: 1.5;
+	margin: 0 0 0.6em;
+}
+.slide-canvas :where(ul, ol) {
+	margin: 0 0 0.6em;
+	padding-left: 1.3em;
+}
+.slide-canvas li {
+	margin-bottom: 0.3em;
+}
+.slide-canvas li::marker {
+	color: var(--slide-accent);
+}
+.slide-canvas a {
+	color: var(--slide-accent);
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+.slide-canvas strong {
+	color: var(--slide-heading);
+	font-weight: 700;
+}
+.slide-canvas em {
+	color: var(--slide-accent-2);
+}
+.slide-canvas hr {
+	border: none;
+	border-top: 2px solid var(--slide-border);
+	margin: 0.6em 0;
+}
+.slide-canvas blockquote {
+	margin: 0 0 0.6em;
+	padding: 0.5em 1em;
+	border-left: 6px solid var(--slide-accent);
+	background: var(--slide-quote-bg);
+	border-radius: 0 12px 12px 0;
+	color: var(--slide-muted);
+	font-style: italic;
+}
+.slide-canvas blockquote p {
+	margin: 0;
+}
+.slide-canvas img {
+	max-width: 100%;
+	border-radius: 12px;
+	display: block;
+}
+.slide-canvas :not(pre) > code {
+	font-family: var(--slide-code-font);
+	font-size: 0.85em;
+	background: var(--slide-code-bg);
+	padding: 0.12em 0.4em;
+	border-radius: 7px;
+	color: var(--slide-accent);
+}
+.slide-canvas pre {
+	font-family: var(--slide-code-font);
+	background: var(--slide-code-bg);
+	border: 1px solid var(--slide-border);
+	border-radius: var(--slide-radius);
+	padding: 22px 26px;
+	font-size: calc(22px * var(--slide-scale));
+	line-height: 1.5;
+	overflow: auto;
+	margin: 0 0 0.6em;
+}
+.slide-canvas pre code {
+	font-family: inherit;
+	background: none;
+	padding: 0;
+	color: var(--slide-fg);
+}
+/* Shiki emits its own inline background on <pre>; use the slide's instead so
+   code blocks match the active slide theme. Token colours stay from Shiki. */
+.slide-canvas pre.shiki {
+	background: var(--slide-code-bg) !important;
+}
+.slide-canvas pre.shiki code {
+	color: inherit;
+}
+.slide-canvas table {
+	border-collapse: collapse;
+	width: 100%;
+	font-size: calc(24px * var(--slide-scale));
+	margin: 0 0 0.6em;
+}
+.slide-canvas th,
+.slide-canvas td {
+	border: 1px solid var(--slide-border);
+	padding: 10px 16px;
+	text-align: left;
+}
+.slide-canvas th {
+	background: color-mix(in oklab, var(--slide-accent) 14%, transparent);
+	color: var(--slide-heading);
+	font-family: var(--slide-heading-font);
+}
+
+/* Two-column layout helper: split a slide on "===" -> .cols */
+.slide-canvas .cols {
+	display: grid;
+	grid-template-columns: repeat(var(--col-count, 2), 1fr);
+	gap: 44px;
+	align-items: start;
+}
+
+/* Slide footer / page number */
+.slide-badge {
+	position: absolute;
+	bottom: 26px;
+	right: 34px;
+	font-size: 20px;
+	font-family: var(--slide-code-font);
+	color: var(--slide-muted);
+	opacity: 0.8;
+	z-index: 2;
+}
+
+/* ------------------------------------------------------------------ *
+ * Slide themes
+ * ------------------------------------------------------------------ */
+.deck-minimal {
+	--slide-bg: #ffffff;
+	--slide-fg: #232936;
+	--slide-heading: #0b1020;
+	--slide-muted: #6b7280;
+	--slide-accent: #6366f1;
+	--slide-accent-2: #db2777;
+}
+
+.deck-ink {
+	--slide-bg: #0f1115;
+	--slide-fg: #d4d9e2;
+	--slide-heading: #f5f7fb;
+	--slide-muted: #8b94a3;
+	--slide-accent: #7c9cff;
+	--slide-accent-2: #ff7ac6;
+	--slide-border: color-mix(in oklab, #ffffff 12%, transparent);
+	--slide-code-bg: rgba(255, 255, 255, 0.05);
+}
+
+.deck-midnight {
+	--slide-bg: #0a0e27;
+	--slide-bg-image: radial-gradient(
+		1100px 700px at 78% -10%,
+		rgba(99, 102, 241, 0.35),
+		transparent 60%
+	);
+	--slide-fg: #cdd5f4;
+	--slide-heading: #ffffff;
+	--slide-muted: #8a93c4;
+	--slide-accent: #818cf8;
+	--slide-accent-2: #22d3ee;
+	--slide-border: rgba(255, 255, 255, 0.14);
+	--slide-code-bg: rgba(255, 255, 255, 0.06);
+}
+
+.deck-sunset {
+	--slide-bg: #fff7ed;
+	--slide-bg-image: radial-gradient(
+		900px 600px at 100% 0%,
+		rgba(251, 146, 60, 0.35),
+		transparent 55%
+	);
+	--slide-fg: #431407;
+	--slide-heading: #7c2d12;
+	--slide-muted: #9a5b3f;
+	--slide-accent: #ea580c;
+	--slide-accent-2: #db2777;
+	--slide-border: rgba(124, 45, 18, 0.18);
+}
+
+.deck-forest {
+	--slide-bg: #f2f8f4;
+	--slide-fg: #12291d;
+	--slide-heading: #064e3b;
+	--slide-muted: #4b6b58;
+	--slide-accent: #059669;
+	--slide-accent-2: #ca8a04;
+	--slide-border: rgba(6, 78, 59, 0.16);
+}
+
+.deck-paper {
+	--slide-bg: #faf6ee;
+	--slide-fg: #2b2620;
+	--slide-heading: #1a1712;
+	--slide-muted: #6f6656;
+	--slide-accent: #b45309;
+	--slide-accent-2: #9f1239;
+	--slide-border: rgba(43, 38, 32, 0.16);
+	--slide-font: "Merriweather", Georgia, "Times New Roman", serif;
+	--slide-heading-font: "Playfair Display", Georgia, serif;
+}
+
+.deck-mono {
+	--slide-bg: #ffffff;
+	--slide-fg: #111111;
+	--slide-heading: #000000;
+	--slide-muted: #666666;
+	--slide-accent: #000000;
+	--slide-accent-2: #444444;
+	--slide-border: #000000;
+	--slide-radius: 0px;
+	--slide-heading-font: var(--slide-code-font);
+}
+.deck-mono .slide-canvas h1,
+.deck-mono .slide-canvas h2 {
+	text-transform: uppercase;
+	letter-spacing: -0.01em;
+}
+
+.deck-neon {
+	--slide-bg: #05060a;
+	--slide-bg-image:
+		radial-gradient(700px 500px at 12% 110%, rgba(236, 72, 153, 0.28), transparent 60%),
+		radial-gradient(800px 500px at 90% -10%, rgba(34, 211, 238, 0.28), transparent 60%);
+	--slide-fg: #d7f5ff;
+	--slide-heading: #ffffff;
+	--slide-muted: #7fa6b8;
+	--slide-accent: #22d3ee;
+	--slide-accent-2: #f472b6;
+	--slide-border: rgba(34, 211, 238, 0.3);
+	--slide-code-bg: rgba(34, 211, 238, 0.08);
+}
+.deck-neon .slide-canvas :where(h1, h2) {
+	text-shadow: 0 0 24px color-mix(in oklab, var(--slide-accent) 55%, transparent);
+}
+
+.deck-corporate {
+	--slide-bg: #ffffff;
+	--slide-fg: #1e293b;
+	--slide-heading: #0f172a;
+	--slide-muted: #64748b;
+	--slide-accent: #2563eb;
+	--slide-accent-2: #0891b2;
+	--slide-border: rgba(15, 23, 42, 0.12);
+}
+.deck-corporate .slide-canvas h1,
+.deck-corporate .slide-canvas h2 {
+	border-bottom: 4px solid var(--slide-accent);
+	padding-bottom: 0.18em;
+	display: inline-block;
+}
+
+.deck-dracula {
+	--slide-bg: #282a36;
+	--slide-fg: #f8f8f2;
+	--slide-heading: #ffffff;
+	--slide-muted: #9ca3c0;
+	--slide-accent: #bd93f9;
+	--slide-accent-2: #ff79c6;
+	--slide-border: rgba(248, 248, 242, 0.16);
+	--slide-code-bg: rgba(255, 255, 255, 0.06);
+}
+
+
+/* ------------------------------------------------------------------ *
+ * Fullscreen presenter
+ * ------------------------------------------------------------------ */
+.present-stage {
+	position: fixed;
+	inset: 0;
+	z-index: 60;
+	background: #000;
+	display: grid;
+	place-items: center;
+}
+
+/* ------------------------------------------------------------------ *
+ * Print / export to PDF — one slide per page
+ * ------------------------------------------------------------------ */
+@media print {
+	@page {
+		margin: 0;
+	}
+	html,
+	body {
+		overflow: visible !important;
+		height: auto !important;
+	}
+	.no-print {
+		display: none !important;
+	}
+	.print-root {
+		display: block !important;
+	}
+	.print-slide {
+		overflow: hidden;
+		page-break-after: always;
+		break-after: page;
+		-webkit-print-color-adjust: exact;
+		print-color-adjust: exact;
+	}
+	.print-slide:last-child {
+		page-break-after: auto;
+		break-after: auto;
+	}
+}

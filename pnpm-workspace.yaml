@@ -1,0 +1,5 @@
+# pnpm v11 reads dependency-build settings from here (not package.json).
+# heroicons ships prebuilt SVGs; its own build script is destructive and must
+# never run during install.
+neverBuiltDependencies:
+  - heroicons
