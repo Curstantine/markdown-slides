@@ -89,6 +89,7 @@ export class AppRoot extends AppElement {
 	private get total() {
 		return parseDeck(store.state.markdown).length;
 	}
+
 	private nav(delta: number) {
 		const next = Math.max(0, Math.min(this.total - 1, store.state.current + delta));
 		store.set({ current: next });
@@ -173,7 +174,7 @@ export class AppRoot extends AppElement {
 	private iconBtn(ic: IconName, label: string, fn: () => void, extra = "", active = false) {
 		return html`
 			<button
-				class="btn btn-ghost btn-sm btn-square ${active ? "btn-active" : ""} ${extra}"
+				class="${active ? "btn-active" : ""} ${extra} btn btn-square btn-ghost btn-sm"
 				title=${label}
 				aria-label=${label}
 				@click=${fn}
@@ -193,19 +194,20 @@ export class AppRoot extends AppElement {
 				</a>
 			</li>
 		`;
+
 		return html`
 			<div class="dropdown dropdown-end">
 				<div
 					tabindex="0"
 					role="button"
-					class="btn btn-ghost btn-sm btn-square"
+					class="btn btn-square btn-ghost btn-sm"
 					title="Color mode"
 				>
 					${icon(activeIc)}
 				</div>
 				<ul
 					tabindex="0"
-					class="dropdown-content menu bg-base-100 rounded-box z-50 w-44 p-2 shadow-lg border border-base-300 mt-1"
+					class="dropdown-content menu z-50 mt-1 w-44 rounded-box border border-base-300 bg-base-100 p-2 shadow-lg"
 				>
 					${opt("light", "sun", "Light")} ${opt("dark", "moon", "Dark")}
 					${opt("system", "desktop", "System")}
@@ -218,28 +220,25 @@ export class AppRoot extends AppElement {
 		const s = store.state;
 		return html`
 			<div
-				class="navbar min-h-0 h-14 px-2 sm:px-4 bg-base-100 border-b border-base-300 gap-1 no-print"
+				class="no-print navbar h-14 min-h-0 gap-1 border-b border-base-300 bg-base-100 px-2 sm:px-4"
 			>
 				<!-- Brand -->
-				<div class="flex items-center gap-2 mr-2">
-					${icon("present", "lg", "text-primary")}
-					<span class="font-bold text-base hidden sm:inline">Markdown Slides</span>
-				</div>
+				<span class="mr-2 flex items-center gap-2 font-bold">Markdown Slides</span>
 
 				<!-- View switch -->
 				<div class="join">
 					<button
-						class="btn btn-sm join-item gap-1 ${s.view === "edit"
+						class="${s.view === "edit"
 							? "btn-primary"
-							: "btn-ghost"}"
+							: "btn-ghost"} btn join-item gap-1 btn-sm"
 						@click=${() => store.set({ view: "edit" })}
 					>
 						${icon("eye", "sm")}<span class="hidden md:inline">Slides</span>
 					</button>
 					<button
-						class="btn btn-sm join-item gap-1 ${s.view === "overview"
+						class="${s.view === "overview"
 							? "btn-primary"
-							: "btn-ghost"}"
+							: "btn-ghost"} btn join-item gap-1 btn-sm"
 						@click=${() => store.set({ view: "overview" })}
 					>
 						${icon("grid", "sm")}<span class="hidden md:inline">Overview</span>
@@ -264,24 +263,24 @@ export class AppRoot extends AppElement {
 					<div
 						tabindex="0"
 						role="button"
-						class="btn btn-ghost btn-sm btn-square"
+						class="btn btn-square btn-ghost btn-sm"
 						title="Export"
 					>
 						${icon("download")}
 					</div>
 					<ul
 						tabindex="0"
-						class="dropdown-content menu bg-base-100 rounded-box z-50 w-52 p-2 shadow-lg border border-base-300 mt-1"
+						class="dropdown-content menu z-50 mt-1 w-52 rounded-box border border-base-300 bg-base-100 p-2 shadow-lg"
 					>
 						<li>
-							<a @click=${() => this.downloadMarkdown()}
-								>${icon("doc", "sm")} Download .md</a
-							>
+							<a @click=${() => this.downloadMarkdown()}>
+								${icon("doc", "sm")} Download .md
+							</a>
 						</li>
 						<li>
-							<a @click=${() => this.exportPdf()}
-								>${icon("present", "sm")} Export PDF…</a
-							>
+							<a @click=${() => this.exportPdf()}>
+								${icon("present", "sm")} Export PDF
+							</a>
 						</li>
 					</ul>
 				</div>
@@ -289,7 +288,7 @@ export class AppRoot extends AppElement {
 				${this.colorModeMenu()}
 
 				<button
-					class="btn btn-primary btn-sm gap-1 ml-1"
+					class="btn mx-1 gap-1 btn-primary btn-sm"
 					@click=${() => this.startPresenting()}
 					title="Present (P)"
 				>
@@ -298,7 +297,7 @@ export class AppRoot extends AppElement {
 
 				<label
 					for="settings-drawer"
-					class="btn btn-ghost btn-sm btn-square"
+					class="btn btn-square btn-ghost btn-sm"
 					title="Slide design"
 					aria-label="Slide design"
 				>
@@ -312,13 +311,13 @@ export class AppRoot extends AppElement {
 		const s = store.state;
 		if (s.view === "overview") return html`<deck-overview></deck-overview>`;
 		return html`
-			<div class="flex flex-col lg:flex-row h-full min-h-0">
+			<div class="flex h-full min-h-0 flex-col lg:flex-row">
 				${s.showEditor
 					? html`<md-editor
-							class="lg:w-[42%] h-1/2 lg:h-full border-b lg:border-b-0 lg:border-r border-base-300 min-h-0"
-						></md-editor>`
+							class="h-1/2 min-h-0 border-b border-base-300 lg:h-full lg:w-[42%] lg:border-r lg:border-b-0"
+						/>`
 					: nothing}
-				<deck-preview class="flex-1 min-w-0 min-h-0"></deck-preview>
+				<deck-preview class="min-h-0 min-w-0 flex-1"></deck-preview>
 			</div>
 		`;
 	}
@@ -328,7 +327,7 @@ export class AppRoot extends AppElement {
 		const slides = parseDeck(store.state.markdown);
 		const cfg = deckSettings();
 		return html`
-			<div class="print-root hidden fixed inset-0 z-100 bg-white">
+			<div class="print-root fixed inset-0 z-100 hidden bg-white">
 				${slides.map(
 					(slide) => html`
 						<div class="print-slide" style="width:${cfg.w}px;height:${cfg.h}px">
@@ -343,7 +342,7 @@ export class AppRoot extends AppElement {
 	render() {
 		return html`
 			<div
-				class="drawer drawer-end no-print"
+				class="no-print drawer drawer-end"
 				@dragover=${(e: DragEvent) => {
 					e.preventDefault();
 					this.dragging = true;
@@ -355,12 +354,12 @@ export class AppRoot extends AppElement {
 			>
 				<input id="settings-drawer" type="checkbox" class="drawer-toggle" />
 
-				<div class="drawer-content flex flex-col h-screen overflow-hidden">
+				<div class="drawer-content flex h-screen flex-col overflow-hidden">
 					${this.navbar()}
-					<main class="flex-1 min-h-0">${this.mainContent()}</main>
+					<main class="min-h-0 flex-1">${this.mainContent()}</main>
 				</div>
 
-				<div class="drawer-side z-70 no-print">
+				<div class="no-print drawer-side z-70">
 					<label
 						for="settings-drawer"
 						class="drawer-overlay"
@@ -380,15 +379,15 @@ export class AppRoot extends AppElement {
 
 			${this.dragging
 				? html`<div
-						class="fixed inset-0 z-80 bg-primary/20 backdrop-blur-sm grid place-items-center pointer-events-none no-print"
+						class="no-print pointer-events-none fixed inset-0 z-80 grid place-items-center bg-primary/20 backdrop-blur-sm"
 					>
 						<div
 							class="rounded-2xl border-4 border-dashed border-primary bg-base-100/90 px-10 py-8 text-center shadow-2xl"
 						>
-							<div class="text-primary flex justify-center mb-2">
+							<div class="mb-2 flex justify-center text-primary">
 								${icon("upload", "lg")}
 							</div>
-							<p class="font-semibold text-lg">Drop a Markdown file to open</p>
+							<p class="text-lg font-semibold">Drop a Markdown file to open</p>
 						</div>
 					</div>`
 				: nothing}

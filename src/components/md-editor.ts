@@ -137,7 +137,7 @@ export class MdEditor extends AppElement {
 
 		const tool = (label: string, ic: Parameters<typeof icon>[0], fn: () => void) => html`
 			<button
-				class="btn btn-ghost btn-xs gap-1"
+				class="btn gap-1 btn-ghost btn-xs"
 				title=${label}
 				aria-label=${label}
 				@click=${fn}
@@ -147,11 +147,11 @@ export class MdEditor extends AppElement {
 		`;
 
 		return html`
-			<div class="flex flex-col h-full bg-base-100">
+			<div class="flex h-full flex-col bg-base-100">
 				<div
-					class="flex items-center gap-1 px-2 py-1.5 border-b border-base-300 bg-base-200/60 flex-wrap"
+					class="flex flex-wrap items-center gap-1 border-b border-base-300 bg-base-200/60 px-2 py-1.5"
 				>
-					<span class="text-xs font-semibold px-2 opacity-70 flex items-center gap-1">
+					<span class="flex items-center gap-1 px-2 text-xs font-semibold opacity-70">
 						${icon("code", "sm")} Markdown
 					</span>
 					<div class="flex-1"></div>
@@ -161,12 +161,12 @@ export class MdEditor extends AppElement {
 						this.insertBlock("\nLeft\n\n===\n\nRight\n"),
 					)}
 					${tool("Code block", "code", () => this.insertBlock("\n```ts\n\n```\n"))}
-					<div class="w-px h-4 bg-base-300 mx-1"></div>
+					<div class="mx-1 h-4 w-px bg-base-300"></div>
 					${tool("Load sample", "docNew", () => this.loadSample())}
 					${tool("Clear", "trash", () => this.clear())}
 				</div>
 
-				<div class="editor-canvas flex-1 min-h-0">
+				<div class="editor-canvas min-h-0 flex-1">
 					<div class="editor-hl" aria-hidden="true">${unsafeHTML(this.hlHtml)}</div>
 					<textarea
 						class="editor-ta ${this.hlHtml ? "" : "plain"}"
@@ -182,7 +182,7 @@ export class MdEditor extends AppElement {
 				</div>
 
 				<div
-					class="flex items-center gap-4 px-3 py-1.5 border-t border-base-300 bg-base-200/60 text-xs opacity-70"
+					class="flex items-center gap-4 border-t border-base-300 bg-base-200/60 px-3 py-1.5 text-xs opacity-70"
 				>
 					<span>${slides} slide${slides === 1 ? "" : "s"}</span>
 					<span>${words} words</span>

@@ -141,7 +141,7 @@ export class PresentMode extends AppElement {
 				})}
 
 				<!-- Progress bar -->
-				<div class="fixed top-0 left-0 right-0 h-1 bg-white/10">
+				<div class="fixed top-0 right-0 left-0 h-1 bg-white/10">
 					<div
 						class="h-full bg-white/70 transition-all"
 						style="width:${total > 1 ? (current / (total - 1)) * 100 : 100}%"
@@ -150,41 +150,40 @@ export class PresentMode extends AppElement {
 
 				<!-- Controls -->
 				<div
-					class="fixed bottom-5 left-1/2 -translate-x-1/2 flex items-center gap-1 rounded-full bg-black/55 backdrop-blur px-2 py-1.5 text-white shadow-2xl transition-opacity duration-300 ${this
-						.controlsVisible
+					class="${this.controlsVisible
 						? "opacity-100"
-						: "opacity-0 pointer-events-none"}"
+						: "opacity-0 pointer-events-none"} fixed bottom-5 left-1/2 flex -translate-x-1/2 items-center gap-1 rounded-full bg-black/55 px-2 py-1.5 text-white shadow-2xl backdrop-blur transition-opacity duration-300"
 					@click=${(e: Event) => e.stopPropagation()}
 				>
 					<button
-						class="btn btn-ghost btn-sm btn-circle text-white hover:bg-white/15"
+						class="btn btn-circle btn-ghost text-white btn-sm hover:bg-white/15"
 						?disabled=${current <= 0}
 						@click=${() => this.go(-1)}
 						aria-label="Previous"
 					>
 						${icon("prev")}
 					</button>
-					<span class="text-sm font-mono tabular-nums px-2 select-none"
+					<span class="px-2 font-mono text-sm tabular-nums select-none"
 						>${current + 1} / ${total}</span
 					>
 					<button
-						class="btn btn-ghost btn-sm btn-circle text-white hover:bg-white/15"
+						class="btn btn-circle btn-ghost text-white btn-sm hover:bg-white/15"
 						?disabled=${current >= total - 1}
 						@click=${() => this.go(1)}
 						aria-label="Next"
 					>
 						${icon("next")}
 					</button>
-					<div class="w-px h-5 bg-white/20 mx-1"></div>
+					<div class="mx-1 h-5 w-px bg-white/20"></div>
 					<button
-						class="btn btn-ghost btn-sm btn-circle text-white hover:bg-white/15"
+						class="btn btn-circle btn-ghost text-white btn-sm hover:bg-white/15"
 						@click=${() => this.toggleFullscreen()}
 						aria-label="Toggle fullscreen"
 					>
 						${icon(this.isFullscreen ? "contract" : "expand")}
 					</button>
 					<button
-						class="btn btn-ghost btn-sm btn-circle text-white hover:bg-white/15"
+						class="btn btn-circle btn-ghost text-white btn-sm hover:bg-white/15"
 						@click=${() => this.exit()}
 						aria-label="Exit presentation"
 					>

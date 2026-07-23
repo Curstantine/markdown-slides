@@ -43,7 +43,7 @@ export class SettingsPanel extends AppElement {
 		return html`
 			<div class="mb-6">
 				<div
-					class="flex items-center gap-2 mb-3 text-sm font-semibold uppercase tracking-wide opacity-70"
+					class="mb-3 flex items-center gap-2 text-sm font-semibold tracking-wide uppercase opacity-70"
 				>
 					${icon(ic, "sm")} ${title}
 				</div>
@@ -57,15 +57,15 @@ export class SettingsPanel extends AppElement {
 
 		return html`
 			<aside
-				class="w-80 max-w-[85vw] h-dvh bg-base-100 border-l border-base-300 flex flex-col shadow-2xl"
+				class="flex h-dvh w-80 max-w-[85vw] flex-col border-l border-base-300 bg-base-100 shadow-2xl"
 			>
-				<div class="flex items-center justify-between px-4 py-3 border-b border-base-300">
-					<h2 class="font-bold text-lg flex items-center gap-2">
+				<div class="flex items-center justify-between border-b border-base-300 px-4 py-3">
+					<h2 class="flex items-center gap-2 text-lg font-bold">
 						${icon("paintBrush")} Slide design
 					</h2>
 					<label
 						for="settings-drawer"
-						class="btn btn-ghost btn-sm btn-circle"
+						class="btn btn-circle btn-ghost btn-sm"
 						aria-label="Close settings"
 					>
 						${icon("close")}
@@ -82,14 +82,13 @@ export class SettingsPanel extends AppElement {
 								${SLIDE_THEMES.map(
 									(t) => html`
 										<button
-											class="relative rounded-lg border-2 p-2 text-left transition hover:shadow-md
-                        ${s.slideTheme === t.id
+											class="${s.slideTheme === t.id
 												? "border-primary ring-2 ring-primary/30"
-												: "border-base-300"}"
+												: "border-base-300"} relative rounded-lg border-2 p-2 text-left transition hover:shadow-md"
 											@click=${() => store.set({ slideTheme: t.id })}
 										>
 											<div
-												class="h-9 rounded-md mb-1.5 flex items-center px-2 gap-1"
+												class="mb-1.5 flex h-9 items-center gap-1 rounded-md px-2"
 												style="background:${t.swatch[0]}"
 											>
 												<span
@@ -98,7 +97,7 @@ export class SettingsPanel extends AppElement {
 													>Aa</span
 												>
 												<span
-													class="ml-auto w-3.5 h-3.5 rounded-full"
+													class="ml-auto h-3.5 w-3.5 rounded-full"
 													style="background:${t.swatch[2]}"
 												></span>
 											</div>
@@ -116,7 +115,7 @@ export class SettingsPanel extends AppElement {
 						"doc",
 						html`
 							<select
-								class="select select-bordered w-full"
+								class="select-bordered select w-full"
 								@change=${(e: Event) => {
 									const id = (e.target as HTMLSelectElement).value;
 									loadFont(findFont(BODY_FONTS, id));
@@ -131,7 +130,7 @@ export class SettingsPanel extends AppElement {
 								)}
 							</select>
 							<div
-								class="mt-2 px-3 py-2 rounded-lg bg-base-200 text-lg"
+								class="mt-2 rounded-lg bg-base-200 px-3 py-2 text-lg"
 								style="font-family:${findFont(BODY_FONTS, s.bodyFont).stack}"
 							>
 								The quick brown fox jumps
@@ -145,7 +144,7 @@ export class SettingsPanel extends AppElement {
 						"code",
 						html`
 							<select
-								class="select select-bordered w-full"
+								class="select-bordered select w-full"
 								@change=${(e: Event) => {
 									const id = (e.target as HTMLSelectElement).value;
 									loadFont(findFont(CODE_FONTS, id));
@@ -160,7 +159,7 @@ export class SettingsPanel extends AppElement {
 								)}
 							</select>
 							<div
-								class="mt-2 px-3 py-2 rounded-lg bg-base-200 text-sm"
+								class="mt-2 rounded-lg bg-base-200 px-3 py-2 text-sm"
 								style="font-family:${findFont(CODE_FONTS, s.codeFont).stack}"
 							>
 								const sum = (a, b) =&gt; a + b;
@@ -179,14 +178,14 @@ export class SettingsPanel extends AppElement {
 									min="0.7"
 									max="1.4"
 									step="0.05"
-									class="range range-primary range-sm flex-1"
+									class="range flex-1 range-primary range-sm"
 									.value=${String(s.fontScale)}
 									@input=${(e: Event) =>
 										store.set({
 											fontScale: Number((e.target as HTMLInputElement).value),
 										})}
 								/>
-								<span class="text-sm font-mono w-12 text-right"
+								<span class="w-12 text-right font-mono text-sm"
 									>${Math.round(s.fontScale * 100)}%</span
 								>
 							</div>
@@ -202,9 +201,9 @@ export class SettingsPanel extends AppElement {
 								${ASPECTS.map(
 									(a) => html`
 										<button
-											class="btn join-item flex-1 ${s.aspect === a.id
+											class="${s.aspect === a.id
 												? "btn-primary"
-												: "btn-outline"}"
+												: "btn-outline"} btn join-item flex-1"
 											@click=${() => store.set({ aspect: a.id })}
 										>
 											${a.name}
@@ -224,9 +223,9 @@ export class SettingsPanel extends AppElement {
 								${TRANSITIONS.map(
 									(t) => html`
 										<button
-											class="btn btn-sm ${s.transition === t.id
+											class="${s.transition === t.id
 												? "btn-primary"
-												: "btn-outline"}"
+												: "btn-outline"} btn btn-sm"
 											@click=${() => store.set({ transition: t.id })}
 										>
 											${t.name}
@@ -254,9 +253,9 @@ export class SettingsPanel extends AppElement {
 					</div>
 				</div>
 
-				<div class="p-4 border-t border-base-300">
+				<div class="border-t border-base-300 p-4">
 					<button
-						class="btn btn-outline btn-error btn-sm w-full gap-2"
+						class="btn w-full gap-2 btn-outline btn-error btn-sm"
 						@click=${() => {
 							if (confirm("Reset all slide design settings to defaults?"))
 								store.set({

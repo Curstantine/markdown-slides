@@ -49,9 +49,9 @@ export class DeckPreview extends AppElement {
 		const slide = slides[current];
 
 		return html`
-			<div class="flex flex-col h-full min-w-0 bg-base-200/40">
+			<div class="flex h-full min-w-0 flex-col bg-base-200/40">
 				<!-- Stage -->
-				<div class="relative flex-1 min-h-0 grid place-items-center p-4 sm:p-8">
+				<div class="relative grid min-h-0 flex-1 place-items-center p-4 sm:p-8">
 					${slideTag(slide, cfg, {
 						class: "w-full h-full",
 						index: current,
@@ -62,7 +62,7 @@ export class DeckPreview extends AppElement {
 
 					<!-- Prev / next arrows -->
 					<button
-						class="btn btn-circle btn-sm sm:btn-md absolute left-3 top-1/2 -translate-y-1/2 shadow-lg"
+						class="btn absolute top-1/2 left-3 btn-circle -translate-y-1/2 shadow-lg btn-sm sm:btn-md"
 						?disabled=${current <= 0}
 						@click=${() => this.go(current - 1, total)}
 						aria-label="Previous slide"
@@ -70,7 +70,7 @@ export class DeckPreview extends AppElement {
 						${icon("prev")}
 					</button>
 					<button
-						class="btn btn-circle btn-sm sm:btn-md absolute right-3 top-1/2 -translate-y-1/2 shadow-lg"
+						class="btn absolute top-1/2 right-3 btn-circle -translate-y-1/2 shadow-lg btn-sm sm:btn-md"
 						?disabled=${current >= total - 1}
 						@click=${() => this.go(current + 1, total)}
 						aria-label="Next slide"
@@ -81,18 +81,17 @@ export class DeckPreview extends AppElement {
 
 				<!-- Filmstrip -->
 				<div
-					class="flex items-center gap-3 px-3 py-2 border-t border-base-300 bg-base-100/70 overflow-x-auto"
+					class="flex items-center gap-3 overflow-x-auto border-t border-base-300 bg-base-100/70 px-3 py-2"
 				>
-					<div class="text-xs font-mono opacity-70 whitespace-nowrap px-1">
+					<div class="px-1 font-mono text-xs whitespace-nowrap opacity-70">
 						${current + 1} / ${total}
 					</div>
 					${slides.map(
 						(s, i) => html`
 							<button
-								class="relative shrink-0 rounded-md overflow-hidden border-2 transition
-                  ${i === current
+								class="${i === current
 									? "border-primary ring-2 ring-primary/30"
-									: "border-base-300 hover:border-base-content/30"}"
+									: "border-base-300 hover:border-base-content/30"} relative shrink-0 overflow-hidden rounded-md border-2 transition"
 								style="width:116px;height:${Math.round((116 * cfg.h) / cfg.w)}px"
 								title=${s.title}
 								@click=${() => this.go(i, total)}
@@ -102,7 +101,7 @@ export class DeckPreview extends AppElement {
 									fitWidth: true,
 								})}
 								<span
-									class="absolute bottom-0.5 right-1 text-[10px] font-mono px-1 rounded bg-base-100/80 text-base-content"
+									class="absolute right-1 bottom-0.5 rounded bg-base-100/80 px-1 font-mono text-[10px] text-base-content"
 									>${i + 1}</span
 								>
 							</button>

@@ -4,6 +4,9 @@
 	"printWidth": 100,
 	"useTabs": true,
 	"tabWidth": 4,
+	"sortTailwindcss": {
+		"stylesheet": "./src/index.css"
+	},
 	"sortImports": {
 		"customGroups": [
 			{

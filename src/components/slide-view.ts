@@ -124,12 +124,12 @@ export class SlideView extends AppElement {
 		const s = this.scale;
 		return html`
 			<div
-				class="deck ${this.themeClass} w-full h-full flex items-center justify-center"
+				class="deck ${this.themeClass} flex h-full w-full items-center justify-center"
 				style=${deckStyle}
 			>
 				<div style="width:${this.w * s}px;height:${this.h * s}px">
 					<div
-						class="slide-surface shadow-xl rounded-(--slide-radius)"
+						class="slide-surface rounded-(--slide-radius) shadow-xl"
 						style="width:${this.w}px;height:${this
 							.h}px;transform:scale(${s});transform-origin:top left"
 					>
