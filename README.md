@@ -27,6 +27,9 @@ slides — entirely in the browser. Built with **Vite + Lit + TypeScript**,
 
 ## Getting started
 
+This project uses **pnpm** exclusively. The expected version is pinned in
+`package.json` as `pnpm@11.16.0`.
+
 ```bash
 pnpm install
 pnpm dev
@@ -37,39 +40,20 @@ Then open the URL Vite prints (default http://localhost:5173).
 ### Other scripts
 
 ```bash
+pnpm lint      # run oxlint
+pnpm fmt       # format the repository with oxfmt
 pnpm build     # type-check (tsc) + production build to dist/
 pnpm preview   # serve the production build
 ```
 
+Do not use `npm`, `npx`, `yarn`, or `bun` for this repository.
+
 ## Keyboard shortcuts
 
-| Key | Action |
-| --- | --- |
-| `←` / `→` (or `↑` / `↓`) | Previous / next slide |
-| `Home` / `End` | First / last slide |
-| `P` or `F5` | Start presenting |
-| `Esc` | Exit presenter |
-| `F` | Toggle fullscreen (in presenter) |
-
-## Architecture
-
-Everything is a Lit component rendered into the **light DOM** (see
-`src/lit-base.ts`), so global Tailwind + daisyUI utility classes and the slide
-theme CSS apply everywhere.
-
-| File | Responsibility |
-| --- | --- |
-| `src/store.ts` | Reactive, `localStorage`-backed settings store |
-| `src/markdown.ts` | Markdown → slides parser (`marked` + `highlight.js`) |
-| `src/config.ts` | Theme / font / aspect / transition catalogues + sample deck |
-| `src/derive.ts` | Resolves store state into concrete render settings |
-| `src/icons.ts` | Heroicons (raw SVGs) + render helper |
-| `src/components/slide-view.ts` | Fixed 1280×720 canvas, scaled to fit its container |
-| `src/components/*` | Editor, preview, overview, presenter, settings, shell |
-
-Slides render on a fixed logical canvas and are scaled with a CSS transform, so a
-deck looks pixel-identical at any viewport size.
-
-> **Note on `heroicons`:** the package ships prebuilt SVGs but includes a
-> destructive `build` script. `pnpm-workspace.yaml` marks it as
-> `neverBuiltDependencies` so it is never rebuilt on install.
+| Key                      | Action                           |
+| ------------------------ | -------------------------------- |
+| `←` / `→` (or `↑` / `↓`) | Previous / next slide            |
+| `Home` / `End`           | First / last slide               |
+| `P` or `F5`              | Start presenting                 |
+| `Esc`                    | Exit presenter                   |
+| `F`                      | Toggle fullscreen (in presenter) |
