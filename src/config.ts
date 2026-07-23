@@ -14,6 +14,7 @@
  */
 export const SITE_LIGHT_THEME = "nord";
 export const SITE_DARK_THEME = "sunset";
+export const SOURCE_URL = "https://github.com/curstantine/markdown-slides";
 
 export interface SlideThemeDef {
 	id: string;

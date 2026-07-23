@@ -3,7 +3,7 @@ import { customElement, state, query } from "lit/decorators.js";
 
 import { slideTag } from "@/components/slide-view";
 
-import { SITE_DARK_THEME, SITE_LIGHT_THEME } from "@/config";
+import { SOURCE_URL, SITE_DARK_THEME, SITE_LIGHT_THEME } from "@/config";
 import { deckSettings } from "@/derive";
 import { icon, type IconName } from "@/icons";
 import { AppElement } from "@/lit-base";
@@ -268,6 +268,18 @@ export class AppRoot extends AppElement {
 					: nothing}
 
 				<div class="flex-1"></div>
+
+				<a
+					href=${SOURCE_URL}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="btn gap-1 btn-ghost btn-sm"
+					title="View on GitHub"
+					aria-label="View Markdown Slides on GitHub"
+				>
+					${icon("icon-[heroicons--code-bracket]", "sm")}
+					<span class="hidden sm:inline">Source</span>
+				</a>
 
 				<!-- File actions -->
 				${this.iconBtn("icon-[heroicons--arrow-up-tray]", "Open .md file", () =>
