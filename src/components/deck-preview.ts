@@ -1,11 +1,13 @@
 import { html } from "lit";
 import { customElement } from "lit/decorators.js";
-import { AppElement } from "@/lit-base";
-import { store } from "@/store";
-import { parseDeck } from "@/markdown";
+
+import { slideTag } from "@/components/slide-view";
+
 import { deckSettings } from "@/derive";
 import { icon } from "@/icons";
-import { slideTag } from "@/components/slide-view";
+import { AppElement } from "@/lit-base";
+import { parseDeck } from "@/markdown";
+import { store } from "@/store";
 
 /** Center stage: the current slide plus navigation and a thumbnail filmstrip. */
 @customElement("deck-preview")

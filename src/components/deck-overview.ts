@@ -1,10 +1,12 @@
 import { html } from "lit";
 import { customElement } from "lit/decorators.js";
-import { AppElement } from "@/lit-base";
-import { store } from "@/store";
-import { parseDeck } from "@/markdown";
-import { deckSettings } from "@/derive";
+
 import { slideTag } from "@/components/slide-view";
+
+import { deckSettings } from "@/derive";
+import { AppElement } from "@/lit-base";
+import { parseDeck } from "@/markdown";
+import { store } from "@/store";
 
 /** Grid of every slide; clicking one jumps to it in the editor/preview view. */
 @customElement("deck-overview")

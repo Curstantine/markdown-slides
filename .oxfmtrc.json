@@ -3,5 +3,19 @@
 	"ignorePatterns": [],
 	"printWidth": 100,
 	"useTabs": true,
-	"tabWidth": 4
+	"tabWidth": 4,
+	"sortImports": {
+		"customGroups": [
+			{
+				"groupName": "components",
+				"elementNamePattern": ["@/components/**"]
+			},
+			{
+				"groupName": "lib",
+				"elementNamePattern": ["@/*"]
+			}
+		],
+		"groups": ["external", "components", "lib"],
+		"newlinesBetween": true
+	}
 }

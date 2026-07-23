@@ -1,17 +1,20 @@
 import { html, nothing } from "lit";
 import { customElement, state, query } from "lit/decorators.js";
-import { AppElement } from "@/lit-base";
-import { store, type ColorMode } from "@/store";
-import { parseDeck } from "@/markdown";
-import { deckSettings } from "@/derive";
+
+import { slideTag } from "@/components/slide-view";
+
 import { SITE_DARK_THEME, SITE_LIGHT_THEME } from "@/config";
+import { deckSettings } from "@/derive";
 import { icon, type IconName } from "@/icons";
+import { AppElement } from "@/lit-base";
+import { parseDeck } from "@/markdown";
 import "@/components/md-editor";
 import "@/components/deck-preview";
 import "@/components/deck-overview";
 import "@/components/settings-panel";
 import "@/components/present-mode";
-import { slideTag } from "@/components/slide-view";
+
+import { store, type ColorMode } from "@/store";
 
 @customElement("app-root")
 export class AppRoot extends AppElement {

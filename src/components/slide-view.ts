@@ -1,9 +1,10 @@
 import { html, type PropertyValues, type TemplateResult } from "lit";
 import { customElement, property, state, query } from "lit/decorators.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
+
+import type { DeckSettings } from "@/derive";
 import { AppElement } from "@/lit-base";
 import type { Slide } from "@/markdown";
-import type { DeckSettings } from "@/derive";
 
 /**
  * Entrance keyframes for a transition, mirrored by navigation direction

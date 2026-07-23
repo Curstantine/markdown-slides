@@ -1,8 +1,6 @@
 import { html } from "lit";
 import { customElement } from "lit/decorators.js";
-import { AppElement } from "@/lit-base";
-import { store } from "@/store";
-import { icon } from "@/icons";
+
 import {
 	ASPECTS,
 	BODY_FONTS,
@@ -12,6 +10,9 @@ import {
 	loadFont,
 	findFont,
 } from "@/config";
+import { icon } from "@/icons";
+import { AppElement } from "@/lit-base";
+import { store } from "@/store";
 
 /** Slide look-and-feel controls: theme, fonts, sizing, transitions. */
 @customElement("settings-panel")

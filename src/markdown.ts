@@ -1,4 +1,5 @@
 import { Marked, type Tokens } from "marked";
+
 import { highlightCodeBlock } from "@/highlighter";
 
 const marked = new Marked();

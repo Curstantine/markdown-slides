@@ -1,12 +1,13 @@
 import { html } from "lit";
 import { customElement, query, state } from "lit/decorators.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
-import { AppElement } from "@/lit-base";
-import { store } from "@/store";
-import { parseDeck } from "@/markdown";
-import { icon } from "@/icons";
+
 import { SAMPLE_MARKDOWN } from "@/config";
 import { highlightMarkdown } from "@/highlighter";
+import { icon } from "@/icons";
+import { AppElement } from "@/lit-base";
+import { parseDeck } from "@/markdown";
+import { store } from "@/store";
 
 /**
  * Left-hand Markdown source editor. A transparent <textarea> sits exactly over

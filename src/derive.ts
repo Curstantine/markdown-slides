@@ -1,5 +1,5 @@
-import { store } from "@/store";
 import { ASPECTS, BODY_FONTS, CODE_FONTS, findFont, findSlideTheme, loadFont } from "@/config";
+import { store } from "@/store";
 
 export interface DeckSettings {
 	themeClass: string;
