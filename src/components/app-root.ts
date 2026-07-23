@@ -1,17 +1,17 @@
 import { html, nothing } from "lit";
 import { customElement, state, query } from "lit/decorators.js";
-import { AppElement } from "../lit-base";
-import { store, type ColorMode } from "../store";
-import { parseDeck } from "../markdown";
-import { deckSettings } from "../derive";
-import { SITE_DARK_THEME, SITE_LIGHT_THEME } from "../config";
-import { icon, type IconName } from "../icons";
-import "./md-editor";
-import "./deck-preview";
-import "./deck-overview";
-import "./settings-panel";
-import "./present-mode";
-import { slideTag } from "./slide-view";
+import { AppElement } from "@/lit-base";
+import { store, type ColorMode } from "@/store";
+import { parseDeck } from "@/markdown";
+import { deckSettings } from "@/derive";
+import { SITE_DARK_THEME, SITE_LIGHT_THEME } from "@/config";
+import { icon, type IconName } from "@/icons";
+import "@/components/md-editor";
+import "@/components/deck-preview";
+import "@/components/deck-overview";
+import "@/components/settings-panel";
+import "@/components/present-mode";
+import { slideTag } from "@/components/slide-view";
 
 @customElement("app-root")
 export class AppRoot extends AppElement {
@@ -23,7 +23,22 @@ export class AppRoot extends AppElement {
 
 	connectedCallback() {
 		super.connectedCallback();
-		this.unsub = store.subscribe(() => this.requestUpdate());
+		this.unsub = store.subscribe(
+			[
+				"markdown",
+				"colorMode",
+				"showEditor",
+				"view",
+				"slideTheme",
+				"bodyFont",
+				"codeFont",
+				"fontScale",
+				"aspect",
+				"transition",
+				"showPageNumbers",
+			],
+			() => this.requestUpdate(),
+		);
 		this.applyColorMode();
 		this.mql.addEventListener("change", this.onSystemThemeChange);
 		window.addEventListener("keydown", this.onKey);
@@ -129,7 +144,9 @@ export class AppRoot extends AppElement {
 	};
 
 	private downloadMarkdown() {
-		const blob = new Blob([store.state.markdown], { type: "text/markdown" });
+		const blob = new Blob([store.state.markdown], {
+			type: "text/markdown",
+		});
 		const url = URL.createObjectURL(blob);
 		const a = document.createElement("a");
 		a.href = url;

@@ -3,8 +3,8 @@ import { createJavaScriptRegexEngine } from "shiki/engine/javascript";
 import markdownLang from "@shikijs/langs/markdown";
 import githubLight from "@shikijs/themes/github-light";
 import githubDark from "@shikijs/themes/github-dark";
-import { findSlideTheme } from "./config";
-import { store } from "./store";
+import { findSlideTheme } from "@/config";
+import { store } from "@/store";
 
 /**
  * Single Shiki highlighter shared by both surfaces:

@@ -1,8 +1,8 @@
 import { html } from "lit";
 import { customElement } from "lit/decorators.js";
-import { AppElement } from "../lit-base";
-import { store } from "../store";
-import { icon } from "../icons";
+import { AppElement } from "@/lit-base";
+import { store } from "@/store";
+import { icon } from "@/icons";
 import {
 	ASPECTS,
 	BODY_FONTS,
@@ -11,7 +11,7 @@ import {
 	TRANSITIONS,
 	loadFont,
 	findFont,
-} from "../config";
+} from "@/config";
 
 /** Slide look-and-feel controls: theme, fonts, sizing, transitions. */
 @customElement("settings-panel")
@@ -20,7 +20,18 @@ export class SettingsPanel extends AppElement {
 
 	connectedCallback() {
 		super.connectedCallback();
-		this.unsub = store.subscribe(() => this.requestUpdate());
+		this.unsub = store.subscribe(
+			[
+				"slideTheme",
+				"bodyFont",
+				"codeFont",
+				"fontScale",
+				"aspect",
+				"transition",
+				"showPageNumbers",
+			],
+			() => this.requestUpdate(),
+		);
 	}
 	disconnectedCallback() {
 		this.unsub?.();

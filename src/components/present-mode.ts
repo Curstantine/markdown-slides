@@ -1,11 +1,11 @@
 import { html } from "lit";
 import { customElement, state } from "lit/decorators.js";
-import { AppElement } from "../lit-base";
-import { store } from "../store";
-import { parseDeck } from "../markdown";
-import { deckSettings } from "../derive";
-import { icon } from "../icons";
-import { slideTag } from "./slide-view";
+import { AppElement } from "@/lit-base";
+import { store } from "@/store";
+import { parseDeck } from "@/markdown";
+import { deckSettings } from "@/derive";
+import { icon } from "@/icons";
+import { slideTag } from "@/components/slide-view";
 
 /**
  * Fullscreen presentation overlay. Owns keyboard navigation while open and
@@ -20,7 +20,20 @@ export class PresentMode extends AppElement {
 
 	connectedCallback() {
 		super.connectedCallback();
-		this.unsub = store.subscribe(() => this.requestUpdate());
+		this.unsub = store.subscribe(
+			[
+				"markdown",
+				"current",
+				"slideTheme",
+				"bodyFont",
+				"codeFont",
+				"fontScale",
+				"aspect",
+				"transition",
+				"showPageNumbers",
+			],
+			() => this.requestUpdate(),
+		);
 		window.addEventListener("keydown", this.onKey, { capture: true });
 		document.addEventListener("fullscreenchange", this.onFsChange);
 		this.armIdle();

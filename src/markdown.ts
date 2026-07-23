@@ -1,11 +1,10 @@
 import { Marked, type Tokens } from "marked";
-import { highlightCodeBlock } from "./highlighter";
+import { highlightCodeBlock } from "@/highlighter";
 
 const marked = new Marked();
 marked.setOptions({ gfm: true, breaks: false });
 marked.use({
 	renderer: {
-		// Render fenced code blocks with Shiki (full <pre> output).
 		code(token: Tokens.Code) {
 			const lang = token.lang?.match(/\S+/)?.[0];
 			return highlightCodeBlock(token.text, lang);

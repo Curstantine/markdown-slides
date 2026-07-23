@@ -1,11 +1,11 @@
 import { html } from "lit";
 import { customElement } from "lit/decorators.js";
-import { AppElement } from "../lit-base";
-import { store } from "../store";
-import { parseDeck } from "../markdown";
-import { deckSettings } from "../derive";
-import { icon } from "../icons";
-import { slideTag } from "./slide-view";
+import { AppElement } from "@/lit-base";
+import { store } from "@/store";
+import { parseDeck } from "@/markdown";
+import { deckSettings } from "@/derive";
+import { icon } from "@/icons";
+import { slideTag } from "@/components/slide-view";
 
 /** Center stage: the current slide plus navigation and a thumbnail filmstrip. */
 @customElement("deck-preview")
@@ -14,7 +14,20 @@ export class DeckPreview extends AppElement {
 
 	connectedCallback() {
 		super.connectedCallback();
-		this.unsub = store.subscribe(() => this.requestUpdate());
+		this.unsub = store.subscribe(
+			[
+				"markdown",
+				"current",
+				"slideTheme",
+				"bodyFont",
+				"codeFont",
+				"fontScale",
+				"aspect",
+				"transition",
+				"showPageNumbers",
+			],
+			() => this.requestUpdate(),
+		);
 	}
 	disconnectedCallback() {
 		this.unsub?.();

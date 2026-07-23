@@ -1,10 +1,10 @@
 import { html } from "lit";
 import { customElement } from "lit/decorators.js";
-import { AppElement } from "../lit-base";
-import { store } from "../store";
-import { parseDeck } from "../markdown";
-import { deckSettings } from "../derive";
-import { slideTag } from "./slide-view";
+import { AppElement } from "@/lit-base";
+import { store } from "@/store";
+import { parseDeck } from "@/markdown";
+import { deckSettings } from "@/derive";
+import { slideTag } from "@/components/slide-view";
 
 /** Grid of every slide; clicking one jumps to it in the editor/preview view. */
 @customElement("deck-overview")
@@ -13,7 +13,20 @@ export class DeckOverview extends AppElement {
 
 	connectedCallback() {
 		super.connectedCallback();
-		this.unsub = store.subscribe(() => this.requestUpdate());
+		this.unsub = store.subscribe(
+			[
+				"markdown",
+				"current",
+				"slideTheme",
+				"bodyFont",
+				"codeFont",
+				"fontScale",
+				"aspect",
+				"transition",
+				"showPageNumbers",
+			],
+			() => this.requestUpdate(),
+		);
 	}
 	disconnectedCallback() {
 		this.unsub?.();

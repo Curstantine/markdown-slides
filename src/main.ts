@@ -1,2 +1,2 @@
-import "./index.css";
-import "./components/app-root";
+import "@/index.css";
+import "@/components/app-root";

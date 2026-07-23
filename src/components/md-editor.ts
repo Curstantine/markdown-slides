@@ -1,12 +1,12 @@
 import { html } from "lit";
 import { customElement, query, state } from "lit/decorators.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
-import { AppElement } from "../lit-base";
-import { store } from "../store";
-import { parseDeck } from "../markdown";
-import { icon } from "../icons";
-import { SAMPLE_MARKDOWN } from "../config";
-import { highlightMarkdown } from "../highlighter";
+import { AppElement } from "@/lit-base";
+import { store } from "@/store";
+import { parseDeck } from "@/markdown";
+import { icon } from "@/icons";
+import { SAMPLE_MARKDOWN } from "@/config";
+import { highlightMarkdown } from "@/highlighter";
 
 /**
  * Left-hand Markdown source editor. A transparent <textarea> sits exactly over
@@ -28,7 +28,7 @@ export class MdEditor extends AppElement {
 
 	connectedCallback() {
 		super.connectedCallback();
-		this.unsub = store.subscribe(() => this.requestUpdate());
+		this.unsub = store.subscribe(["markdown", "colorMode"], () => this.requestUpdate());
 		this.mql.addEventListener("change", this.onSystemThemeChange);
 	}
 	disconnectedCallback() {

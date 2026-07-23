@@ -1,20 +1,15 @@
-import { SAMPLE_MARKDOWN } from "./config";
+import { SAMPLE_MARKDOWN } from "@/config";
 
 export type ColorMode = "light" | "dark" | "system";
 export type ViewMode = "edit" | "preview" | "overview";
 
 export interface AppState {
-	/** Raw markdown source. */
 	markdown: string;
-	/** Site chrome color mode. */
 	colorMode: ColorMode;
-	/** Editor pane visible alongside the preview. */
 	showEditor: boolean;
 	view: ViewMode;
-	/** Current slide index (0-based). */
 	current: number;
 
-	/* Slide look & feel */
 	slideTheme: string;
 	bodyFont: string;
 	codeFont: string;
@@ -79,11 +74,18 @@ class Store extends EventTarget {
 		}
 	}
 
-	/** Patch one or more fields and notify subscribers. */
-	set(patch: Partial<AppState>) {
-		this.state = { ...this.state, ...patch };
+	/** Patch one or more fields and notify only subscribers that use changed fields. */
+	set(p: Partial<AppState>) {
+		const changed = Object.fromEntries(
+			Object.entries(p).filter(([k, v]) =>
+				Object.is(this.state[k as keyof AppState], v) ? false : true,
+			),
+		) as Partial<AppState>;
+		if (Object.keys(changed).length === 0) return;
+
+		this.state = { ...this.state, ...changed };
 		this.persist();
-		this.dispatchEvent(new CustomEvent("change", { detail: patch }));
+		this.dispatchEvent(new CustomEvent("change", { detail: changed }));
 	}
 
 	/** Notify subscribers without changing state (e.g. async resources loaded). */
@@ -91,9 +93,25 @@ class Store extends EventTarget {
 		this.dispatchEvent(new CustomEvent("change", { detail: {} }));
 	}
 
-	/** Subscribe to any change; returns an unsubscribe fn. */
-	subscribe(fn: () => void): () => void {
-		const handler = () => fn();
+	/** Subscribe to any change; returns an unsubscribe function. */
+	subscribe(fn: () => void): () => void;
+	/** Subscribe to changes to specific state fields; `touch()` still notifies every subscriber. */
+	subscribe<K extends keyof AppState>(keys: readonly K[], fn: () => void): () => void;
+	subscribe<K extends keyof AppState>(
+		keysOrFn: readonly K[] | (() => void),
+		maybeFn?: () => void,
+	): () => void {
+		const keys = typeof keysOrFn === "function" ? undefined : keysOrFn;
+		const fn = typeof keysOrFn === "function" ? keysOrFn : maybeFn;
+		if (!fn) throw new Error("A store subscription callback is required");
+
+		const handler = (event: Event) => {
+			const changed = (event as CustomEvent<Partial<AppState>>).detail;
+			// An empty patch is a resource refresh (for example a Shiki grammar loading).
+			if (!keys || Object.keys(changed).length === 0 || keys.some((key) => key in changed))
+				fn();
+		};
+
 		this.addEventListener("change", handler);
 		return () => this.removeEventListener("change", handler);
 	}
